@@ -1,24 +1,29 @@
-let tickets = JSON.parse(sessionStorage.getItem(sessionStorage.getItem("data-seance-id")));// устанавливаем информацию
-let ticketWrapper = document.getElementsByClassName("ticket__info-wrapper")[0];
-ticketWrapper.getElementsByClassName("ticket__details ticket__title")[0].textContent = tickets.currentBuy["data-film-name"];
+document.addEventListener('DOMContentLoaded', () => {
+    const ticketDetails = getJSON('ticket-details');
+    const ticketInfoWrapper = document.querySelector('.ticket__info-wrapper');
+    ticketInfoWrapper.innerHTML = '';
 
-let ticketChairs = ticketWrapper.getElementsByClassName("ticket__details ticket__chairs")[0];
-ticketChairs.textContent = "";
-Object.keys(tickets.currentBuy["chair"]).forEach((row, index) => {// ряд и место 1/2, 1/2...
-    tickets.currentBuy["chair"][row].forEach((place, index) => {
-        ticketChairs.textContent += `${row}/${place}`;
-        if (tickets.currentBuy["chair"][row].length - 1 > index) {
-            ticketChairs.textContent += ", ";
-        }
-    })
-    if (Object.keys(tickets.currentBuy["chair"]).length - 1 > index) {
-        ticketChairs.textContent += ", ";
+    const textHtml = `
+      <p class='ticket__info'>На фильм: <span class='ticket__details ticket__title'>${ticketDetails.filmName}</span></p>
+      <p class='ticket__info'>Ряд/Место: <span class='ticket__details ticket__chairs'>${ticketDetails.strRowPlace}</span></p>
+      <p class='ticket__info'>В зале: <span class='ticket__details ticket__hall'>${ticketDetails.hallNameNumber}</span></p>
+      <p class='ticket__info'>Начало сеанса: <span class='ticket__details ticket__start'>${ticketDetails.seanceTime} - ${ticketDetails.seanceDay}</span></p>
+      <p class='ticket__info'>Стоимость: <span class='ticket__details ticket__cost'>${ticketDetails.totalCost}</span> рублей</p>
+      <button class='acceptin-button'>Получить код бронирования</button>
+      <p class='ticket__hint'>После оплаты билет будет доступен в этом окне, а также придёт вам на почту. Покажите QR-код нашему контроллёру у входа в зал.</p>
+      <p class='ticket__hint'>Приятного просмотра!</p>
+    `;
+    ticketInfoWrapper.insertAdjacentHTML('beforeend', textHtml);
+
+    const acceptinButton = document.querySelector('.acceptin-button');
+    acceptinButton?.addEventListener('click', (event) => {
+        const hallsConfigurationObj = getJSON('pre-config-halls-paid-seats'); 
+        const hallConfiguration = hallsConfigurationObj[ticketDetails.hallId];
+        const requestBodyString = `event=sale_add&timestamp=${ticketDetails.seanceTimeStampInSec}&hallId=${ticketDetails.hallId}&seanceId=${ticketDetails.seanceId}&hallConfiguration=${hallConfiguration}`;
+        createRequest(requestBodyString, 'PAYMENT', updateHtmlPayment, true);
+    });
+
+    function updateHtmlPayment(serverResponse) {
+        window.location.href = 'ticket.html';
     }
-})
-ticketWrapper.getElementsByClassName("ticket__details ticket__hall")[0].textContent = tickets.currentBuy["data-hall-name"].substr(tickets.currentBuy["data-hall-name"].length - 1);
-ticketWrapper.getElementsByClassName("ticket__details ticket__start")[0].textContent = tickets.currentBuy["data-seance-time"];
-ticketWrapper.getElementsByClassName("ticket__details ticket__cost")[0].textContent = tickets.currentBuy["cost"];
-
-document.getElementsByClassName("acceptin-button")[0].addEventListener("mouseenter", function () {// смена указателя при наведении на кнопку
-    this.style.cursor = "pointer";
-})
+});
