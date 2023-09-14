@@ -118,7 +118,7 @@ body {
   content: '';
   display: block;
   position: absolute;
-  right: -0.7rem;
+  right: -1.46rem;
   top: -3rem;
   border: 1.5rem solid transparent;
   border-bottom: 0 solid transparent;
@@ -234,7 +234,7 @@ body {
 .conf-step {
   text-align: center;
   background-color: #171D24;
-  padding: 1.5rem 3rem 1.5rem;
+  padding: 1.5rem 2rem 1.5rem;
 }
 
 .conf-step__wrapper {
@@ -405,10 +405,13 @@ body {
 }
 
 .ticket__info-qr {
-  display: block;
+  display: flex;
   margin: 3rem auto 0;
-  width: 20rem;
-  height: 20rem;
+  width: 31.7%;
+  padding: 10px;
+  /* background: white; */
+  justify-content: center;
+  align-items: center;
 }
 
 @media screen and (min-width: 479px) {
@@ -434,35 +437,22 @@ body {
 /*================================================================*/
 
 .movie .movie-seances__hall .acceptin-button-disabled {
+ background-color: #888888;
+ pointer-events: none
+}
+
+@media (max-width: 768px) {
+  .movie-seances__hall:nth-child(2) {
+    margin-top: 20px; /* отступ , сверху у 1 контейнера зала, когда экран меньше 768px */
+  }
+  .ticket__info-qr {
+    width: 100%; /* Изменяем ширину на 100% при экране меньше 768px */
+  }
+}
+
+.acceptin-button:disabled {
   background-color: #888888;
   pointer-events: none
  }
- 
- .acceptin-button:disabled {
-   background-color: #888888;
-   pointer-events: none
- }
- 
- @media(max-width: 320px) {
-   .movie .movie__info {
-     display: flex;
-     flex-direction: column;
-   }
-   .movie .movie__poster {
-     position: relative;
-     height: auto;
-     width: 50%;
-     margin: auto;
-   }
-   .movie .movie__poster .movie__poster-image {
-     position: relative;
-     top: -3rem;
-     height: auto;
-     width: 100%;
-   }
-   .movie .movie__description {
-     flex-grow: 1;
-     padding-left: 0;
-     margin-bottom: 3rem;
-   }
- }
+
+
