@@ -1,35 +1,29 @@
-const storedSeanceStart = localStorage.getItem('seanceTimeStart');
-const storedFilmName = localStorage.getItem('filmName');
-const storedSeatsLocation = localStorage.getItem('seatsLocation');
-const storedHallName = localStorage.getItem('hallName');
-const storedCostOfTickets = localStorage.getItem('costOfTickets');
+const selectSeanse = JSON.parse(sessionStorage.selectSeanse);
+let places = "";
+let price = 0;
 
-const filmTitle = document.querySelector('.ticket__title');
-const seatsLocation = document.querySelector('.ticket__chairs');
-const hallName = document.querySelector('.ticket__hall');
-const filmStart = document.querySelector('.ticket__start');
-const ticketCost = document.querySelector('.ticket__cost');
-const acceptinButton = document.querySelector('.acceptin-button');
+selectSeanse.salesPlaces.forEach(salePlace => {
+	if (places !=="") {
+		places += ", ";
+	};
+	places += `${salePlace.row} / ${salePlace.place}`;
+	price += salePlace.type === "standart" ? Number(selectSeanse.priceStandart) : Number(selectSeanse.priceVip);
+});
 
-filmTitle.textContent = storedFilmName;
-seatsLocation.textContent = storedSeatsLocation;
-hallName.textContent = storedHallName;
-filmStart.textContent = storedSeanceStart;
-ticketCost.textContent = storedCostOfTickets;
+document.querySelector(".ticket__title").innerHTML = selectSeanse.filmName;
+document.querySelector(".ticket__chairs").innerHTML = places;
+document.querySelector(".ticket__hall").innerHTML = selectSeanse.hallName;
+document.querySelector(".ticket__start").innerHTML = selectSeanse.seanceTime;
+document.querySelector(".ticket__cost").innerHTML = price;
 
-const storedTimestamp = localStorage.getItem('seanceTimestamp');
-const storedHallId = localStorage.getItem('hallId');
-const storedSeanceId = localStorage.getItem('seanceId');
-const storedConfigHall = localStorage.getItem('newConfigHall');
+const newHallConfig = selectSeanse.hallConfig.replace(/selected/g, "taken");
+console.log(newHallConfig);
 
-let argumentForPayment = `event=sale_add&timestamp=${storedTimestamp}&hallId=${storedHallId}&seanceId=${storedSeanceId}&hallConfiguration=${storedConfigHall}`;
-
-function goToPageTicket(response) {
-  location.assign('ticket.html');
-}
-
-acceptinButton.addEventListener('click', (e) => {
-  e.preventDefault();
-
-  createRequest(argumentForPayment, goToPageTicket);
- });
+document.querySelector(".acceptin-button").addEventListener("click", (event) => {
+	event.preventDefault();
+	let request = `event=sale_add&timestamp=${selectSeanse.seanceTimeStamp}&hallId=${selectSeanse.hallId}&seanceId=${selectSeanse.seanceId}&hallConfiguration=${newHallConfig}`;
+	
+	createRequest(request, () => {
+		window.location.href="ticket.html";
+	});
+});

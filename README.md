@@ -2,8 +2,6 @@
 
 ## Создание «информационной системы для предварительного бронирования билетов».
 
-GithubPage: https://github.com/ludenss/js-cp-diploma-edited/deployments/github-pages
-
 ### Студенту предоставляются следующие компоненты системы:
 
 - [Верстка](./sources/layout.zip)
