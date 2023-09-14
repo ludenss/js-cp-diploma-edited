@@ -3,6 +3,7 @@
 ## Создание «информационной системы для предварительного бронирования билетов».
 - Ссылка на проект: https://ludenss.github.io/js-cp-diploma-edited/
 - Технологии в проекте: HTML, CSS, Bootstrap, JavaScript, Git;
+- Ссылка на репозиторий: https://github.com/ludenss/js-cp-diploma-edited
 
 ## Задача
 
