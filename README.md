@@ -4,7 +4,7 @@
 - JavaScript
 - HTML
 - fetch
-- Ссылка https://vanganzorov.github.io/js-cp-diploma-edited/
+- Ссылка https://ludenss.github.io/js-cp-diploma-edited/
 
 ## Создание «информационной системы для предварительного бронирования билетов».
 
